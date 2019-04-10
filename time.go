@@ -1,6 +1,8 @@
 package utils
 
-import "time"
+import (
+	"time"
+)
 
 // GetMidnight returns the midnight related to t
 func GetMidnight(t time.Time) time.Time {
@@ -28,4 +30,8 @@ func ToMilliseconds(t time.Time) int64 {
 
 func NsToMillis(ns int64) int64 {
 	return ns / int64(1e6)
+}
+
+func TimeWithTimestamp(milliseconds int64) time.Time {
+	return time.Unix(milliseconds/1e3, (milliseconds%1e3)*1e6).UTC()
 }
