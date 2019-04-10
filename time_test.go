@@ -9,7 +9,7 @@ import (
 
 func TestGetMidnight(t *testing.T) {
 	t.Run("Test using time.Now()", func(t *testing.T) {
-		now := time.Now()
+		now := time.Now().UTC()
 		midnight := GetMidnight(now)
 
 		// date must be equal to now
@@ -27,7 +27,7 @@ func TestGetMidnight(t *testing.T) {
 
 func TestGetYesteday(t *testing.T) {
 	t.Run("Test using time.Now()", func(t *testing.T) {
-		now := time.Now()
+		now := time.Now().UTC()
 		yesterday := GetYesterday(now)
 
 		// date must be equal to now
@@ -39,4 +39,15 @@ func TestGetYesteday(t *testing.T) {
 		assert.Equal(t, 0, yesterday.Second())
 		assert.Equal(t, 0, yesterday.Nanosecond())
 	})
+}
+
+func TestCloseJSON(t *testing.T) {
+	bytes := []byte("{a:5,")
+
+	err := CloseJSON(bytes)
+	assert.NoError(t, err)
+	assert.Equal(t, []byte("{a:5}"), bytes)
+
+	err = CloseJSON(nil)
+	assert.Error(t, err)
 }

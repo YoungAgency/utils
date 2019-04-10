@@ -2,6 +2,7 @@ package utils
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 )
 
@@ -15,4 +16,18 @@ func GetJSONBytes(key string, val interface{}) (b []byte, err error) {
 	}
 	b = []byte(fmt.Sprintf("\"%s\":%s", key, b))
 	return
+}
+
+func CloseJSON(b []byte) error {
+	if b == nil {
+		return errors.New("b param is nil")
+	}
+	l := len(b)
+	if l > 0 {
+		if b[l-1] == byte(',') {
+			b = b[:l-1]
+		}
+	}
+	b = append(b, byte('}'))
+	return nil
 }
