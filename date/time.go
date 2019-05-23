@@ -43,6 +43,11 @@ func Time(milliseconds int64) time.Time {
 	return time.Unix(milliseconds/1e3, (milliseconds%1e3)*1e6).UTC()
 }
 
+// Time returns time.Time rapresentation of ns
+func NsTime(ns int64) time.Time {
+	return time.Unix(ns/1e9, ns%1e9).UTC()
+}
+
 // NsToMs returns ns as ms
 func NsToMs(ns int64) int64 {
 	return ns / int64(time.Millisecond)
