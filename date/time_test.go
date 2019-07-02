@@ -1,6 +1,7 @@
 package date
 
 import (
+	"reflect"
 	"testing"
 	"time"
 
@@ -39,4 +40,56 @@ func TestGetYesteday(t *testing.T) {
 		assert.Equal(t, 0, yesterday.Second())
 		assert.Equal(t, 0, yesterday.Nanosecond())
 	})
+}
+
+func TestWeekEnd(t *testing.T) {
+	type args struct {
+		t time.Time
+	}
+	tests := []struct {
+		name  string
+		args  args
+		wantR time.Time
+	}{
+		{
+			name: "Test weekend",
+			args: args{
+				t: Time(1562057683000),
+			},
+			wantR: Time(1562544000000),
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if gotR := WeekEnd(tt.args.t); !reflect.DeepEqual(gotR, tt.wantR) {
+				t.Errorf("WeekEnd() = %v, want %v", gotR, tt.wantR)
+			}
+		})
+	}
+}
+
+func TestWeekStart(t *testing.T) {
+	type args struct {
+		t time.Time
+	}
+	tests := []struct {
+		name  string
+		args  args
+		wantR time.Time
+	}{
+		{
+			name: "Test week start",
+			args: args{
+				t: Time(1562057683000),
+			},
+			wantR: Time(1561939200000),
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if gotR := WeekStart(tt.args.t); !reflect.DeepEqual(gotR, tt.wantR) {
+				t.Errorf("WeekStart() = %v, want %v", gotR, tt.wantR)
+			}
+		})
+	}
 }

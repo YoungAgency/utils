@@ -28,6 +28,29 @@ func Tomorrow(t time.Time) (r time.Time) {
 	return
 }
 
+// WeekStart get the week start
+func WeekStart(t time.Time) (r time.Time) {
+	weekday := time.Duration(t.Weekday())
+	if weekday == 0 {
+		weekday = 7
+	}
+	r = Midnight(t)
+	r = r.Add(-1 * (weekday - 1) * 24 * time.Hour)
+	return
+}
+
+// WeekEnd get the week end
+func WeekEnd(t time.Time) (r time.Time) {
+	weekday := time.Duration(t.Weekday())
+	if weekday == 0 {
+		weekday = 7
+	}
+	off := 7 - weekday
+	r = Midnight(t)
+	r = r.Add((off + 1) * 24 * time.Hour)
+	return
+}
+
 // Timestamp returns t timestamp
 func Timestamp(t time.Time) int64 {
 	return t.UnixNano() / int64(time.Millisecond)
@@ -67,4 +90,14 @@ func GetYesterday(timestamp int64) int64 {
 // GetTomorrow adds 24h to timestamp
 func GetTomorrow(timestamp int64) int64 {
 	return timestamp + dayMillis
+}
+
+// GetWeekStart get the week start
+func GetWeekStart(timestamp int64) (r int64) {
+	return Timestamp(WeekStart(Time(timestamp)))
+}
+
+// GetWeekEnd get the week end
+func GetWeekEnd(timestamp int64) (r int64) {
+	return Timestamp(WeekEnd(Time(timestamp)))
 }
