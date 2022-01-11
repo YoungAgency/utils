@@ -24,12 +24,16 @@ func New() *GinWrapper {
 
 // DefaultGinEngine returns a default gin engine with the following middlewares: recovery, sentry, logger, cors, rateLimiter and healthCheck
 func DefaultGinEngine(allowedOrigins []string, logger *zerolog.Logger) *gin.Engine {
-	return New().
+	engine := New().
 		WithRecovery().
 		WithSentry().
-		WithZerolog(logger).
-		WithCors(allowedOrigins).
-		WithRateLimiter().
+		WithZerolog(logger)
+
+	if len(allowedOrigins) > 0 {
+		engine = engine.WithCors(allowedOrigins)
+	}
+
+	return engine.WithRateLimiter().
 		WithHealthCheck().
 		Engine()
 }
