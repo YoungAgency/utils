@@ -37,8 +37,13 @@ func GinZerologMiddleware(logger *zerolog.Logger) gin.HandlerFunc {
 			Str("path", c.Request.URL.Path).
 			Str("route", c.FullPath()).
 			Str("ip", c.ClientIP()).
+			Str("user_agent", c.Request.UserAgent()).
 			Int("status", c.Writer.Status()).
 			Dur("latency", end)
+
+		if val, ok := c.Get("young-user"); val != nil && ok {
+			event.Interface("user", val)
+		}
 
 		err := c.Request.Context().Value(CtxErrKey)
 		if err != nil {
