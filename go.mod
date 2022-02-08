@@ -3,10 +3,9 @@ module github.com/YoungAgency/utils
 go 1.14
 
 require (
-	github.com/YoungAgency/rate v2.2.1+incompatible // indirect
-	github.com/buger/jsonparser v1.1.1 // indirect
-	github.com/coreos/go-systemd v0.0.0-20190321100706-95778dfbb74e // indirect
-	github.com/getsentry/sentry-go v0.11.0 // indirect
+	github.com/YoungAgency/rate v2.2.1+incompatible
+	github.com/buger/jsonparser v1.1.1
+	github.com/getsentry/sentry-go v0.11.0
 	github.com/gin-contrib/cors v1.3.1
 	github.com/gin-gonic/gin v1.7.7
 	github.com/google/uuid v1.3.0
