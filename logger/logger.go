@@ -23,6 +23,7 @@ const (
 // It can use two formats: json and text. The service parameter
 // is logged in each log line.
 func NewZerologLogger(service string, format string, out io.Writer) *zerolog.Logger {
+	zerolog.TimestampFieldName = "timestamp"
 	var output io.Writer
 	switch format {
 	case "test":
