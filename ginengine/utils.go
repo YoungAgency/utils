@@ -29,6 +29,16 @@ func GinZerologMiddleware(logger *zerolog.Logger) gin.HandlerFunc {
 		c.Next()
 		end := time.Since(start)
 
+		var ip string
+
+		if cloudflareIp := c.Request.Header.Get("CF-Connecting-IP"); cloudflareIp != "" {
+			ip = cloudflareIp
+		} else if forwardedIp := c.Request.Header.Get("X-Forwarded-For"); forwardedIp != "" {
+			ip = forwardedIp
+		} else {
+			ip = c.ClientIP()
+		}
+
 		event := logger.Log()
 		event.
 			Str("protocol", "http").
@@ -36,7 +46,8 @@ func GinZerologMiddleware(logger *zerolog.Logger) gin.HandlerFunc {
 			Str("method", c.Request.Method).
 			Str("path", c.Request.URL.Path).
 			Str("route", c.FullPath()).
-			Str("ip", c.ClientIP()).
+			Str("query", c.Request.URL.RawQuery).
+			Str("ip", ip).
 			Str("user_agent", c.Request.UserAgent()).
 			Int("status", c.Writer.Status()).
 			Dur("latency", end)
