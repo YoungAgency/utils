@@ -35,7 +35,7 @@ func CheckIfMaintenance(serviceName string) gin.HandlerFunc {
 
 		if maintenance {
 			c.AbortWithStatusJSON(
-				503, gin.H{"message": "maintenance mode active", "code": "ERR_FEATURE_DISABLED"})
+				400, gin.H{"message": "maintenance mode active", "code": "ERR_FEATURE_DISABLED"})
 			return
 		}
 	}
