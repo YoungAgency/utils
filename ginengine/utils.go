@@ -14,6 +14,7 @@ type CtxKey int
 const (
 	CtxRequestIdKey CtxKey = iota
 	CtxErrKey       CtxKey = iota
+	CtxUserIdKey           = "yng_auth_user_id"
 )
 
 func GinZerologMiddleware(logger *zerolog.Logger) gin.HandlerFunc {
@@ -39,6 +40,14 @@ func GinZerologMiddleware(logger *zerolog.Logger) gin.HandlerFunc {
 			ip = c.ClientIP()
 		}
 
+		userID := ""
+		userIDCtx := c.Request.Context().Value(CtxUserIdKey)
+		if userIDCtx != nil {
+			if userIDS, ok := userIDCtx.(string); ok {
+				userID = userIDS
+			}
+		}
+
 		event := logger.Log()
 		event.
 			Str("protocol", "http").
@@ -49,6 +58,7 @@ func GinZerologMiddleware(logger *zerolog.Logger) gin.HandlerFunc {
 			Str("query", c.Request.URL.RawQuery).
 			Str("ip", ip).
 			Str("user_agent", c.Request.UserAgent()).
+			Str("user_id", userID).
 			Int("status", c.Writer.Status()).
 			Dur("latency", end)
 
