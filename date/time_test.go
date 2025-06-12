@@ -4,8 +4,6 @@ import (
 	"reflect"
 	"testing"
 	"time"
-
-	"github.com/stretchr/testify/assert"
 )
 
 func TestGetMidnight(t *testing.T) {
@@ -14,15 +12,29 @@ func TestGetMidnight(t *testing.T) {
 		midnight := Midnight(now)
 
 		// date must be equal to now
-		assert.Equal(t, now.Year(), midnight.Year())
-		assert.Equal(t, now.Month(), midnight.Month())
-		assert.Equal(t, now.Day(), midnight.Day())
+		if now.Year() != midnight.Year() {
+			t.Errorf("expected year %d, got %d", now.Year(), midnight.Year())
+		}
+		if now.Month() != midnight.Month() {
+			t.Errorf("expected month %d, got %d", now.Month(), midnight.Month())
+		}
+		if now.Day() != midnight.Day() {
+			t.Errorf("expected day %d, got %d", now.Day(), midnight.Day())
+		}
 
 		// hours, minutes, seconds and ns offset must be 0
-		assert.Equal(t, 0, midnight.Hour())
-		assert.Equal(t, 0, midnight.Minute())
-		assert.Equal(t, 0, midnight.Second())
-		assert.Equal(t, 0, midnight.Nanosecond())
+		if midnight.Hour() != 0 {
+			t.Errorf("expected hour %d, got %d", 0, midnight.Hour())
+		}
+		if midnight.Minute() != 0 {
+			t.Errorf("expected minute %d, got %d", 0, midnight.Minute())
+		}
+		if midnight.Second() != 0 {
+			t.Errorf("expected second %d, got %d", 0, midnight.Second())
+		}
+		if midnight.Nanosecond() != 0 {
+			t.Errorf("expected nanosecond %d, got %d", 0, midnight.Nanosecond())
+		}
 	})
 }
 
@@ -32,13 +44,23 @@ func TestGetYesteday(t *testing.T) {
 		yesterday := Midnight(Yesterday(now))
 
 		// date must be equal to now
-		assert.Equal(t, now.YearDay()-1, yesterday.YearDay())
+		if now.YearDay()-1 != yesterday.YearDay() {
+			t.Errorf("expected yearday %d, got %d", now.YearDay()-1, yesterday.YearDay())
+		}
 
 		// hours, minutes, seconds and ns offset must be 0
-		assert.Equal(t, 0, yesterday.Hour())
-		assert.Equal(t, 0, yesterday.Minute())
-		assert.Equal(t, 0, yesterday.Second())
-		assert.Equal(t, 0, yesterday.Nanosecond())
+		if yesterday.Hour() != 0 {
+			t.Errorf("expected hour %d, got %d", 0, yesterday.Hour())
+		}
+		if yesterday.Minute() != 0 {
+			t.Errorf("expected minute %d, got %d", 0, yesterday.Minute())
+		}
+		if yesterday.Second() != 0 {
+			t.Errorf("expected second %d, got %d", 0, yesterday.Second())
+		}
+		if yesterday.Nanosecond() != 0 {
+			t.Errorf("expected nanosecond %d, got %d", 0, yesterday.Nanosecond())
+		}
 	})
 }
 
@@ -61,7 +83,8 @@ func TestWeekEnd(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if gotR := WeekEnd(tt.args.t); !reflect.DeepEqual(gotR, tt.wantR) {
+			gotR := WeekEnd(tt.args.t)
+			if !reflect.DeepEqual(gotR, tt.wantR) {
 				t.Errorf("WeekEnd() = %v, want %v", gotR, tt.wantR)
 			}
 		})
@@ -87,7 +110,8 @@ func TestWeekStart(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if gotR := WeekStart(tt.args.t); !reflect.DeepEqual(gotR, tt.wantR) {
+			gotR := WeekStart(tt.args.t)
+			if !reflect.DeepEqual(gotR, tt.wantR) {
 				t.Errorf("WeekStart() = %v, want %v", gotR, tt.wantR)
 			}
 		})
