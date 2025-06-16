@@ -72,7 +72,7 @@ func (g *GinWrapper) WithRateLimiter(opts ...*rateGin.LimitOptions) *GinWrapper 
 func (g *GinWrapper) WithCors(allowedOrigins []string) *GinWrapper {
 	corsConfig := cors.Config{
 		AllowMethods:     []string{"GET", "POST", "PUT", "HEAD", "DELETE", "OPTIONS"},
-		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type", "Authorization", "X-Access-Token"},
+		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type", "Authorization", "X-Access-Token", "yp-client-version"},
 		AllowOrigins:     allowedOrigins,
 		AllowCredentials: true,
 		MaxAge:           12 * time.Hour,
