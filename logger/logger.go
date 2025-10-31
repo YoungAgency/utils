@@ -8,6 +8,7 @@ import (
 
 	"github.com/rs/zerolog"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/status"
 )
 
 // NewZerologLogger returns an instance of a zerolog Logger.
@@ -38,10 +39,13 @@ func GrpcZerologMiddleware(logger *zerolog.Logger) grpc.UnaryServerInterceptor {
 		resp, err := handler(ctx, req)
 		end := time.Since(start)
 
+		code := status.Code(err)
+
 		event.
 			Str("protocol", "grpc").
 			Str("route", route).
 			Dur("latency", end).
+			Str("status", code.String()).
 			Err(err).
 			Msg("")
 
