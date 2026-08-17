@@ -93,7 +93,6 @@ func (w *Writer) parseLogEvent(data []byte) (*sentry.Event, bool) {
 		Timestamp: now(),
 		Level:     sentryLvl,
 		Logger:    logger,
-		Extra:     map[string]interface{}{},
 	}
 
 	err = jsonparser.ObjectEach(data, func(key, value []byte, vt jsonparser.ValueType, offset int) error {
@@ -107,7 +106,7 @@ func (w *Writer) parseLogEvent(data []byte) (*sentry.Event, bool) {
 				Stacktrace: newStacktrace(),
 			})
 		default:
-			event.Extra[string(key)] = string(value)
+			//event.Extra[string(key)] = string(value)
 		}
 
 		return nil

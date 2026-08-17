@@ -15,6 +15,7 @@ const (
 	CtxRequestIdKey CtxKey = iota
 	CtxErrKey
 	CtxUserIdKey
+	CtxErrCodeKey
 )
 
 func GinZerologMiddleware(logger *zerolog.Logger) gin.HandlerFunc {
@@ -54,7 +55,6 @@ func GinZerologMiddleware(logger *zerolog.Logger) gin.HandlerFunc {
 			Dur("latency", end)
 
 		// context key set by auth package
-
 		if val, ok := c.Request.Context().Value(CtxUserIdKey).(int64); ok && val != 0 {
 			event.Int64("user", val)
 		} else {
